@@ -98,6 +98,9 @@ module CapistranoGitFlow
 
 
     def gitflow_calculate_tag
+      puts "Set origin to #{fetch(:repo_url)}"
+      system "git remote set-url origin #{fetch(:repo_url)}"
+
       if gitflow_using_git?
         # make sure we have any other deployment tags that have been pushed by others so our auto-increment code doesn't create conflicting tags
         `git fetch`
@@ -175,6 +178,9 @@ module CapistranoGitFlow
         puts "Tagging current branch for deployment to staging as '#{new_staging_tag}'"
         system "git tag -a -m 'tagging current code for deployment to staging' #{new_staging_tag}"
       end
+
+      puts "Push #{new_staging_tag} to origin"
+      system "git push origin #{new_staging_tag}"
 
       set :branch, new_staging_tag
     end
